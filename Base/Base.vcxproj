@@ -267,6 +267,7 @@ if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
   <ItemGroup>
     <None Include="Src\MySrc\object.impl" />
     <None Include="Src\MySrc\registry.impl" />
+    <None Include="Src\MySrc\renderer.impl" />
     <None Include="Src\MySrc\scene.manager.impl" />
     <None Include="Src\MySrc\singleton.impl" />
     <None Include="Src\MySrc\useful.impl" />

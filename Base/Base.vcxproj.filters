@@ -295,5 +295,8 @@
     <None Include="Src\MySrc\object.impl">
       <Filter>テンプレート ファイル</Filter>
     </None>
+    <None Include="Src\MySrc\renderer.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
   </ItemGroup>
 </Project>
