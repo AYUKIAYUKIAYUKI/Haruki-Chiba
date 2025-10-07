@@ -14,41 +14,6 @@
 #include "window.h"
 
 //****************************************************
-// 無名名前空間を定義 
-//****************************************************
-namespace
-{
-	/* この名前空間を削除してください */
-
-	// 引数付き初期化
-	template <typename T> std::unique_ptr<T> DedicatedInitialize(HINSTANCE hInstance, HWND hWnd)
-	{
-		useful::up<T> upInstance = std::make_unique<T>();
-
-		if (!upInstance)
-		{
-			return nullptr;
-		}
-
-		if (FAILED(upInstance->Init(hInstance, hWnd)))
-		{
-			return nullptr;
-		}
-
-		return upInstance;
-	}
-
-	// 引数付き解放
-	template <typename T> void DedicatedRelease(T* pInstance)
-	{
-		if (pInstance)
-		{
-			pInstance->Uninit();
-		}
-	}
-};
-
-//****************************************************
 // usingディレクティブ
 //****************************************************
 using namespace useful;
@@ -63,8 +28,8 @@ std::function<std::optional<float>()> CInputManager::s_fpGetInputDir =
 
 	// 入力装置の取得
 	auto pKeyboard = CInputManager::RefInstance().GetKeyboard();
-	auto pPad      = CInputManager::RefInstance().GetPad();
-	
+	auto pPad = CInputManager::RefInstance().GetPad();
+
 	// 移動入力の受付確認用
 	float InputX = 0.0f;
 	float InputY = 0.0f;
@@ -101,7 +66,7 @@ std::function<std::optional<float>()> CInputManager::s_fpGetInputDir =
 
 	// 入力方向を角度として変換
 	return atan2f(InputX, InputY);
-};
+	};
 
 //============================================================================
 // 初期化処理
@@ -112,13 +77,28 @@ bool CInputManager::Initialize(HINSTANCE hInstance)
 	HWND hWnd = CWindow::RefInstance().GetWindowHandle();
 
 	// キーボードの生成
-	m_upKeyboard = DedicatedInitialize<CInputKeyboard>(hInstance, hWnd);
+	m_upKeyboard = make_unique<CInputKeyboard>();
+
+	if (FAILED(m_upKeyboard->Init(hInstance, hWnd)))
+	{
+		return false;
+	}
 
 	// マウスの生成
-	m_upMouse = DedicatedInitialize<CInputMouse>(hInstance, hWnd);
+	m_upMouse = make_unique<CInputMouse>();
+
+	if (FAILED(m_upMouse->Init(hInstance, hWnd)))
+	{
+		return false;
+	}
 
 	// パッドの生成
-	m_upPad = DedicatedInitialize<CInputPad>(hInstance, hWnd);
+	m_upPad = make_unique<CInputPad>();
+
+	if (FAILED(m_upPad->Init(hInstance, hWnd)))
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -127,16 +107,7 @@ bool CInputManager::Initialize(HINSTANCE hInstance)
 // 終了処理
 //============================================================================
 void CInputManager::Finalize()
-{
-	// パッドの終了処理
-	DedicatedRelease<CInputPad>(m_upPad.get());
-
-	// マウスの終了処理
-	DedicatedRelease<CInputMouse>(m_upMouse.get());
-
-	// キーボードの終了処理
-	DedicatedRelease<CInputKeyboard>(m_upKeyboard.get());
-}
+{}
 
 //============================================================================
 // 更新処理
