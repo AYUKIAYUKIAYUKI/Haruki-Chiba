@@ -1,0 +1,104 @@
+//============================================================================
+// 
+// ユースフル、テンプレート実装ファイル [useful.impl]
+// Author : 福田歩希
+// 
+//============================================================================
+
+#pragma once
+
+//============================================================================
+// 汎用生成
+//============================================================================
+template <typename T>
+T* useful::Create()
+{
+	T* p = DBG_NEW T();
+
+	if (!p->Initialize())
+	{
+		Release(p);
+	}
+
+	return p;
+}
+
+//============================================================================
+// 汎用生成 - ユニークポインタ
+//============================================================================
+template <typename T>
+useful::up<T> useful::CreateUniquePtr()
+{
+	up<T> up = make_unique<T>();
+
+	if (!up->Initialize())
+	{
+		up->Finalize();
+		up.reset();
+	}
+
+	return up;
+}
+
+//============================================================================
+// 汎用解放
+//============================================================================
+template <typename T>
+void useful::Release(T*& p)
+{
+	if (p)
+	{
+		p->Release();
+		p = nullptr;
+	}
+}
+
+//============================================================================
+// up交換
+//============================================================================
+template <typename T, typename U>
+void useful::ChangeUniquePtr(up<T>& up)
+{
+	if (up)
+	{
+		up.reset();
+	}
+
+	if (!up)
+	{
+		up = make_unique<U>();
+	}
+}
+
+//============================================================================
+// Yaw回転
+//============================================================================
+template <typename T>
+void useful::RotateYawAxis(T& Base, float fCoef)
+{
+	Vec3 Rot = Base.GetRot();
+	Rot.y += fCoef;
+	Base.SetRot(Rot);
+}
+
+//============================================================================
+// Yaw目標回転
+//============================================================================
+template <typename T>
+void useful::RotateTargetYawAxis(T& Base, float fCoef)
+{
+	Vec3 RotTarget = Base.GetRotTarget();
+	RotTarget.y += fCoef;
+	Base.SetRotTarget(RotTarget);
+}
+
+////============================================================================
+//// SRTメンバを指数減衰
+////============================================================================
+//template <typename T>
+//void useful::ExponentialDecayForSRT(T& Base, float fCoef)
+//{
+//	useful::ExponentialDecay(Base.GetSize(), Base.GetSizeTarget(), fCoef);
+//	useful::ExponentialDecay(Base.GetPos(), Base.GetPosTarget(), fCoef);
+//	useful::ExponentialDecay(Base.GetRot(), Base.GetRotTarget(), fCoef);
+//}

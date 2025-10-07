@@ -1,0 +1,20 @@
+{
+  "Element": [
+    [
+      "Title",
+      "Data\\CAMERA\\Title.json"
+    ],
+    [
+      "Tutorial",
+      "Data\\CAMERA\\Tutorial.json"
+    ],
+    [
+      "Game",
+      "Data\\CAMERA\\Game.json"
+    ],
+    [
+      "Result",
+      "Data\\CAMERA\\Result.json"
+    ]
+  ]
+}

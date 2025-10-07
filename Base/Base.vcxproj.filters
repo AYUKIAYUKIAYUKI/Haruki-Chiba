@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="テンプレート ファイル">
+      <UniqueIdentifier>{432a3bc5-e793-4151-9650-ac539e3d8e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="モジュール インターフェース">
+      <UniqueIdentifier>{523e8353-695c-4dca-b2f4-c22ad9f4ef38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="%28リンカー用外部ファイル%29">
+      <UniqueIdentifier>{da1aa657-5749-4adc-8970-e9e47019a7c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="魔界 %28悪質なソースコード群%29">
+      <UniqueIdentifier>{9f10829b-5943-45b9-b60e-1902fdf39488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29">
+      <UniqueIdentifier>{3f8d6c85-1f16-4f60-be2b-1999c7e27407}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="魔界 %28悪質なソースコード群%29\オブジェクトとか %28古いやつ%29">
+      <UniqueIdentifier>{08c9d603-c318-452d-9abf-cfb3f240b0d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29">
+      <UniqueIdentifier>{72f602e0-85e2-4919-89a0-678a57ab7a04}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\MySrc\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\pch.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\window.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\singleton.ixx">
+      <Filter>モジュール インターフェース</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\renderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_demo.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_draw.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_impl_dx9.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_impl_win32.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_tables.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\External\ImGui\imgui_widgets.cpp">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\texture.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\registry.ixx">
+      <Filter>モジュール インターフェース</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\useful.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\font.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.ixx">
+      <Filter>モジュール インターフェース</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\game.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\tutorial.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\result.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\title.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.text.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\camera.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\camera_manager.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\input.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\input_keyboard.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\input_mouse.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\input_pad.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\light.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\sound.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.3D.cpp">
+      <Filter>魔界 %28悪質なソースコード群%29\オブジェクトとか %28古いやつ%29</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\input.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\X.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\scene.manager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.X.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.2D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\MySrc\main.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\pch.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\window.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\renderer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imconfig.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imgui.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imgui_impl_dx9.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imgui_impl_win32.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imgui_internal.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imstb_rectpack.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imstb_textedit.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\External\ImGui\imstb_truetype.h">
+      <Filter>%28リンカー用外部ファイル%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\texture.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\useful.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\font.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\registry.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\singleton.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\input.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\title.h">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\game.h">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\tutorial.h">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\result.h">
+      <Filter>魔界 %28悪質なソースコード群%29\死シーン %28いじろう%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.text.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\camera.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\camera_manager.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\input.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\input_keyboard.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\input_mouse.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\input_pad.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\light.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\sound.h">
+      <Filter>魔界 %28悪質なソースコード群%29\環境系 %28見る必要が少ない%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.3D.h">
+      <Filter>魔界 %28悪質なソースコード群%29\オブジェクトとか %28古いやつ%29</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\X.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\scene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\scene.manager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.X.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\object.2D.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\MySrc\player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\MySrc\useful.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+    <None Include="Src\MySrc\registry.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+    <None Include="Src\MySrc\singleton.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+    <None Include="Src\MySrc\scene.manager.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+    <None Include="Src\MySrc\window.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+    <None Include="Src\MySrc\object.impl">
+      <Filter>テンプレート ファイル</Filter>
+    </None>
+  </ItemGroup>
+</Project>

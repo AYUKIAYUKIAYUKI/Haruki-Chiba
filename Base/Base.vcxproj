@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{a16af533-748b-476d-a670-8922598c7894}</ProjectGuid>
+    <RootNamespace>Base</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x64;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)Src\MySrc;$(SolutionDir)Src\External\ImGui;$(SolutionDir)Src\External\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>
+      </ImportLibrary>
+      <AdditionalOptions>/NOIMPLIB /NOEXP %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>pch.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(SolutionDir)Src\MySrc;$(SolutionDir)Src\External\ImGui;$(SolutionDir)Src\External\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/FS %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>
+      </ImportLibrary>
+      <AdditionalOptions>/NOIMPLIB /NOEXP %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(OutDir)$(TargetName).lib" del "$(OutDir)$(TargetName).lib"
+if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Src\External\ImGui\imgui.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Src\External\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Src\MySrc\camera.cpp" />
+    <ClCompile Include="Src\MySrc\camera_manager.cpp" />
+    <ClCompile Include="Src\MySrc\font.manager.cpp" />
+    <ClCompile Include="Src\MySrc\game.cpp" />
+    <ClCompile Include="Src\MySrc\input.cpp" />
+    <ClCompile Include="Src\MySrc\input_keyboard.cpp" />
+    <ClCompile Include="Src\MySrc\input_mouse.cpp" />
+    <ClCompile Include="Src\MySrc\input_pad.cpp" />
+    <ClCompile Include="Src\MySrc\light.cpp" />
+    <ClCompile Include="Src\MySrc\main.cpp" />
+    <ClCompile Include="Src\MySrc\input.manager.cpp" />
+    <ClCompile Include="Src\MySrc\object.cpp" />
+    <ClCompile Include="Src\MySrc\object.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\object.manager.cpp" />
+    <ClCompile Include="Src\MySrc\object.2D.cpp" />
+    <ClCompile Include="Src\MySrc\object.3D.cpp" />
+    <ClCompile Include="Src\MySrc\object.text.cpp" />
+    <ClCompile Include="Src\MySrc\object.X.cpp" />
+    <ClCompile Include="Src\MySrc\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\player.cpp" />
+    <ClCompile Include="Src\MySrc\registry.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\renderer.cpp" />
+    <ClCompile Include="Src\MySrc\result.cpp" />
+    <ClCompile Include="Src\MySrc\scene.manager.cpp" />
+    <ClCompile Include="Src\MySrc\singleton.ixx">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Src\MySrc\sound.cpp" />
+    <ClCompile Include="Src\MySrc\texture.manager.cpp" />
+    <ClCompile Include="Src\MySrc\title.cpp" />
+    <ClCompile Include="Src\MySrc\tutorial.cpp" />
+    <ClCompile Include="Src\MySrc\useful.cpp" />
+    <ClCompile Include="Src\MySrc\window.cpp" />
+    <ClCompile Include="Src\MySrc\X.manager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Src\External\ImGui\imconfig.h" />
+    <ClInclude Include="Src\External\ImGui\imgui.h" />
+    <ClInclude Include="Src\External\ImGui\imgui_impl_dx9.h" />
+    <ClInclude Include="Src\External\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Src\External\ImGui\imgui_internal.h" />
+    <ClInclude Include="Src\External\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Src\External\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Src\External\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Src\MySrc\camera.h" />
+    <ClInclude Include="Src\MySrc\camera_manager.h" />
+    <ClInclude Include="Src\MySrc\font.manager.h" />
+    <ClInclude Include="Src\MySrc\game.h" />
+    <ClInclude Include="Src\MySrc\input.h" />
+    <ClInclude Include="Src\MySrc\input_keyboard.h" />
+    <ClInclude Include="Src\MySrc\input_mouse.h" />
+    <ClInclude Include="Src\MySrc\input_pad.h" />
+    <ClInclude Include="Src\MySrc\light.h" />
+    <ClInclude Include="Src\MySrc\main.h" />
+    <ClInclude Include="Src\MySrc\input.manager.h" />
+    <ClInclude Include="Src\MySrc\object.h" />
+    <ClInclude Include="Src\MySrc\object.manager.h" />
+    <ClInclude Include="Src\MySrc\object.2D.h" />
+    <ClInclude Include="Src\MySrc\object.3D.h" />
+    <ClInclude Include="Src\MySrc\object.text.h" />
+    <ClInclude Include="Src\MySrc\object.X.h" />
+    <ClInclude Include="Src\MySrc\pch.h" />
+    <ClInclude Include="Src\MySrc\player.h" />
+    <ClInclude Include="Src\MySrc\registry.h" />
+    <ClInclude Include="Src\MySrc\renderer.h" />
+    <ClInclude Include="Src\MySrc\result.h" />
+    <ClInclude Include="Src\MySrc\scene.h" />
+    <ClInclude Include="Src\MySrc\scene.manager.h" />
+    <ClInclude Include="Src\MySrc\singleton.h" />
+    <ClInclude Include="Src\MySrc\sound.h" />
+    <ClInclude Include="Src\MySrc\texture.manager.h" />
+    <ClInclude Include="Src\MySrc\title.h" />
+    <ClInclude Include="Src\MySrc\tutorial.h" />
+    <ClInclude Include="Src\MySrc\useful.h" />
+    <ClInclude Include="Src\MySrc\window.h" />
+    <ClInclude Include="Src\MySrc\X.manager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\MySrc\object.impl" />
+    <None Include="Src\MySrc\registry.impl" />
+    <None Include="Src\MySrc\scene.manager.impl" />
+    <None Include="Src\MySrc\singleton.impl" />
+    <None Include="Src\MySrc\useful.impl" />
+    <None Include="Src\MySrc\window.impl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

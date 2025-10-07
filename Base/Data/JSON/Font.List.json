@@ -1,0 +1,16 @@
+{
+  "Element": [
+    [
+      "Hangyaku",
+      "Data\\Font\\Hangyaku\\Param.json"
+    ],
+    [
+      "Meiryo",
+      "Data\\Font\\Meiryo\\Param.json"
+    ],
+    [
+      "Tamanegi",
+      "Data\\Font\\Tamanegi\\Param.json"
+    ]
+  ]
+}

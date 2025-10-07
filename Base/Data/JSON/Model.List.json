@@ -1,0 +1,12 @@
+{
+  "Element": [
+    [
+      "Unko",
+      "Data\\MODEL\\unko.x"
+    ],
+    [
+      "Player",
+      "Data\\MODEL\\tenna.x"
+    ]
+  ]
+}
