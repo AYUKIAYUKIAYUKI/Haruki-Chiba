@@ -102,92 +102,109 @@ bool CPlayer::Initialize()
 	// 状態ごとの実行内容を定義していく：通常
 	m_afpExecuteState[static_cast<unsigned char>(State::DEFAULT)] =
 		[this]() -> bool
+	{
+		// 移動
+		Move(COEF_MOVE_SPEED);
+
+		if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_B))
 		{
-			// 移動
-			Move(COEF_MOVE_SPEED);
+			Change(State::DAMAGE, 0, [this]() -> void {});
+		}
 
-			// ジャンプ
-			if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
-			{
-				Change(State::JUMP, 0, [this]() -> void
+		// ジャンプ
+		if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
+		{
+			Change(State::JUMP, 0, [this]() -> void
+				{
+					// 加速度：XZ軸：速度を抑えつつ余韻を遺す
+					// 　　　：Y軸 ：ジャンプ力を与える
+					m_Velocity =
 					{
-						// 加速度：XZ軸：速度を抑えつつ余韻を遺す
-						// 　　　：Y軸 ：ジャンプ力を与える
-						m_Velocity =
-						{
-							m_Velocity.x * COEF_MOVE_SPEED_AIR,
-							COEF_TRIGGER_JUMP,
-							m_Velocity.z * COEF_MOVE_SPEED_AIR
-						};
+						m_Velocity.x * COEF_MOVE_SPEED_AIR,
+						COEF_TRIGGER_JUMP,
+						m_Velocity.z * COEF_MOVE_SPEED_AIR
+					};
 
-						// みちょ数
-						const int nMichosRepeat = 3;
+					// みちょ数
+					const int nMichosRepeat = 3;
 
-						// みちょっと幅
-						std::array<float, nMichosRepeat> afScales =
-						{
-							-0.25f, -0.35f, -0.15f
-						};
+					// みちょっと幅
+					std::array<float, nMichosRepeat> afScales =
+					{
+						-0.25f, -0.35f, -0.15f
+					};
 
-						// みちょっとしてみる
-						for (int i = 0; i < nMichosRepeat; ++i)
-						{
-							i % 2 == 0 ?
-								m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
-								m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
-						}
+					// みちょっとしてみる
+					for (int i = 0; i < nMichosRepeat; ++i)
+					{
+						i % 2 == 0 ?
+							m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+							m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+					}
 
-						// 最後に元に戻す
-						m_vMichos.push_back(VEC3_ONE_INIT);
-					});
-			}
+					// 最後に元に戻す
+					m_vMichos.push_back(VEC3_ONE_INIT);
+				});
+		}
 
-			return true;
-		};
+		return true;
+	};
 
 	// 状態：ジャンプ
 	m_afpExecuteState[static_cast<unsigned char>(State::JUMP)] =
 		[this]() -> bool
+	{
+		// 重力加速
+		bool bLanding = Gravity();
+
+		// 地面に到達したら通常状態へ
+		if (bLanding)
 		{
-		    // 重力加速
-			bool bLanding = Gravity();
+			Change(State::DEFAULT, 0, [this]() -> void
+				{
+					// みちょ数
+					const int nMichosRepeat = 5;
 
-			// 地面に到達したら通常状態へ
-			if (bLanding)
-			{
-				Change(State::DEFAULT, 0, [this]() -> void
+					// みちょっと幅
+					std::array<float, nMichosRepeat> afScales =
 					{
-						// みちょ数
-						const int nMichosRepeat = 5;
+						0.25f, 0.20f, 0.15f, 0.10f, -0.15f
+					};
 
-						// みちょっと幅
-						std::array<float, nMichosRepeat> afScales =
-						{
-							0.25f, 0.20f, 0.15f, 0.10f, -0.15f
-						};
+					// みちょっとしてみる
+					for (int i = 0; i < nMichosRepeat; ++i)
+					{
+						i % 2 == 0 ?
+							m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+							m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+					}
 
-						// みちょっとしてみる
-						for (int i = 0; i < nMichosRepeat; ++i)
-						{
-							i % 2 == 0 ?
-								m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
-								m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
-						}
+					// 最後に元に戻す
+					m_vMichos.push_back(VEC3_ONE_INIT);
+				});
+		}
 
-						// 最後に元に戻す
-						m_vMichos.push_back(VEC3_ONE_INIT);
-					});
-			}
-
-			return true;
-		};
+		return true;
+	};
 
 	// 状態：オシリ
 	m_afpExecuteState[static_cast<unsigned char>(State::HIP)] =
 		[this]() -> bool
+	{
+		return true;
+	};
+
+	// 状態：ダメージ
+	m_afpExecuteState[static_cast<unsigned char>(State::DAMAGE)] =
+		[this]() -> bool
+	{
+		bool a = Hit();
+		if (a)
 		{
-			return true;
-		};
+			Change(State::DEFAULT, 0, [this]() -> void {});
+		}
+		return true;
+	};
 
 	return true;
 }
@@ -351,6 +368,22 @@ void CPlayer::PlayWave()
 }
 
 //============================================================================
+// 攻撃当たった処理
+//============================================================================
+bool CPlayer::Hit()
+{
+	static int Num = 0;
+	Num++;
+
+	if (Num > 120)
+	{
+		Num = 0;
+		return true;
+	}
+	return false;
+}
+
+//============================================================================
 // 数値編集
 //============================================================================
 void CPlayer::ValueEdit()
@@ -390,6 +423,9 @@ void CPlayer::ValueEdit()
 
 		// 加速度を出力
 		ImGui::Text("Velocity:(%.2f, %.2f, %.2f)", m_Velocity.x, m_Velocity.y, m_Velocity.z);
+
+		// ステートを出力
+		ImGui::Text("State:%s", ToString(m_State));
 	}
 	ImGui::End();
 
@@ -400,4 +436,14 @@ void CPlayer::ValueEdit()
 	CPlayer::COEF_MOVE_SPEED     = fCoefMoveSpeed;
 	CPlayer::COEF_MOVE_SPEED_AIR = fCoefMoveSpeedAir;
 	CPlayer::COEF_BRAKING        = fCoefBraking;
+}
+
+//============================================================================
+// 現在のステートをみたい
+//============================================================================
+const char* CPlayer::ToString(State s)
+{
+	std::vector<const char*> StateName = { "DEFAULT","JUMP","HIP","DAMAGE" };
+
+	return StateName[static_cast<int>(s)];
 }

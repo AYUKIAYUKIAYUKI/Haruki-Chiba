@@ -25,6 +25,7 @@ class CPlayer : public CObjectX
 		DEFAULT = 0, // 通常
 		JUMP,        // ジャンプ
 		HIP,         // オシリ
+		DAMAGE,		 // ダメージ
 		MAX
 	};
 
@@ -123,7 +124,8 @@ private:
 	void SetWave();          // 振動設定
 	void PlayWave();         // 振動再生
 	void ValueEdit();        // 数値編集
-
+	bool Hit();				 // 攻撃当たった処理
+	const char* ToString(State s);//現在のステートを返す処理
 	//****************************************************
 	// data
 	//****************************************************
