@@ -61,9 +61,9 @@ void CGame::Update()
 	}
 
 	 // ‚¤‚ñ‚¿‚È‚Ì¶¬
-	 auto p = CObjectText::Create(OpenJsonFile("Data\\JSON\\TEXT\\Unci.json"));
-	 p->SetPos({ GetRandomValue(1000.0f), GetRandomValue(1000.0f) });
-	 p->SetCol({ GetRandomValue(1.0f), GetRandomValue(1.0f), GetRandomValue(1.0f), 1.0f });
+	// auto p = CObjectText::Create(OpenJsonFile("Data\\JSON\\TEXT\\Unci.json"));
+	 //p->SetPos({ GetRandomValue(1000.0f), GetRandomValue(1000.0f) });
+	 //p->SetCol({ GetRandomValue(1.0f), GetRandomValue(1.0f), GetRandomValue(1.0f), 1.0f });
 }
 
 //============================================================================
