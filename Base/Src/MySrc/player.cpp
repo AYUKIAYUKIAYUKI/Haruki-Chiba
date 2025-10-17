@@ -60,6 +60,15 @@ std::function<bool(CPlayer*)> CPlayer::s_fpDefaultFactory =
 		// モデルの取得
 		auto pModel = useful::PtrCheck(CXManager::RefInstance().RefRegistry().BindAtKey("Player"), "Syokika Lamda no Naka Model Nai");
 
+		//ステータスを取得
+		const JSON& Json = OpenJsonFileMaybeThrow("Data\\JSON\\PlayerStatus.json");
+		COEF_CORRECT_TARGET = Json["CORRECT_TARGET"];// 目標値への補間係数
+		COEF_GRAVITY		= Json["GRAVITY"];		 // 重力加速度
+		COEF_TRIGGER_JUMP	= Json["TRIGGER_JUMP"];	 // ジャンプ力
+		COEF_MOVE_SPEED		= Json["MOVE_SPEED"];	 // 移動速度(地上)
+		COEF_MOVE_SPEED_AIR = Json["MOVE_SPEED_AIR"];// 移動速度(空中)
+		COEF_BRAKING		= Json["BRAKING"];		 // 制動力
+
 		// モデルの設定
 		pPlayer->SetModel(pModel);
 
@@ -402,13 +411,16 @@ void CPlayer::ValueEdit()
 	// ImGuiで編集
 	MIS::MyImGuiShortcut_BeginWindow(reinterpret_cast<const char*>(u8"プレイヤーの各種パラメータ操作"));
 	{
-		ImGui::DragFloat("CrorrectTarget", &fCoefCrorrectTarget, fSpeed, fSpeed,  1.0f);
-		ImGui::DragFloat("Gravity",        &fCoefGravity,        fSpeed, FLT_MIN, 0.0f);
-		ImGui::DragFloat("TriggerJump",    &fCoefTriggerJump,    fSpeed, fSpeed,  FLT_MAX);
-		ImGui::DragFloat("MoveSpeed",      &fCoefMoveSpeed,      fSpeed, fSpeed,  FLT_MAX);
-		ImGui::DragFloat("MoveSpeedAir",   &fCoefMoveSpeedAir,   fSpeed, fSpeed,  FLT_MAX);
-		ImGui::DragFloat("Braking",        &fCoefBraking,        fSpeed, fSpeed,  FLT_MAX);
-
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"目標値への補間係数"), &fCoefCrorrectTarget, fSpeed, fSpeed, 1.0f);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"重力"),               &fCoefGravity,		  fSpeed, FLT_MIN, 0.0f);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"ジャンプ力"),			&fCoefTriggerJump,    fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"地上の移動速度"),		&fCoefMoveSpeed,      fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"空中の移動速度"),		&fCoefMoveSpeedAir,   fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"制動力"),				&fCoefBraking,        fSpeed, fSpeed, FLT_MAX);
+		if (ImGui::Button(reinterpret_cast<const char*>(u8"書き出す")))
+		{
+			ExportStatus();
+		}
 		// サイズを出力
 		const Vec3& Size = GetSize();
 		ImGui::Text("Size:(%.2f, %.2f, %.2f)", Size.x, Size.y, Size.z);
@@ -416,7 +428,7 @@ void CPlayer::ValueEdit()
 		// 向きを出力
 		const Vec3& Rot = GetRot();
 		ImGui::Text("Rot:(%.2f, %.2f, %.2f)", Rot.x, Rot.y, Rot.z);
-		
+
 		// 座標を出力
 		const Vec3& Pos = GetPos();
 		ImGui::Text("Pos:(%.2f, %.2f, %.2f)", Pos.x, Pos.y, Pos.z);
@@ -446,4 +458,31 @@ const char* CPlayer::ToString(State s)
 	std::vector<const char*> StateName = { "DEFAULT","JUMP","HIP","DAMAGE" };
 
 	return StateName[static_cast<int>(s)];
+}
+
+//============================================================================
+// ステータスを書き出す
+//============================================================================
+void CPlayer::ExportStatus()
+{
+	//jsonファイルを作成
+	std::ofstream writing_file;
+	std::string filepath = "Data\\JSON\\PlayerStatus.json";
+	writing_file.open(filepath, std::ios::out);
+
+	JSON jsondata =
+	{ 
+		{"CORRECT_TARGET", COEF_CORRECT_TARGET},// 目標値への補間係数
+		{"GRAVITY",COEF_GRAVITY },				// 重力加速度
+		{"TRIGGER_JUMP",COEF_TRIGGER_JUMP },	// ジャンプ力
+		{"MOVE_SPEED",COEF_MOVE_SPEED},			// 移動速度(地上)
+		{"MOVE_SPEED_AIR",COEF_MOVE_SPEED_AIR},	// 移動速度(空中)
+		{"BRAKING",COEF_BRAKING},				// 制動力
+	};
+
+	//作成したファイルに内容を書き込む
+	writing_file << jsondata.dump(4);
+
+	writing_file.close();
+
 }
