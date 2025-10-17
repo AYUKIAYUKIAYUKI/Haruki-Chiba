@@ -28,7 +28,7 @@ using namespace useful;
 // ▽ 最終的には定数となりますが、漸次的に編集可能な値とします
 
 // 目標値への補間係数
-float CPlayer::COEF_CORRECT_TARGET = 0.15f;
+float CPlayer::COEF_CORRECT_TARGET = 0.6f;
 
 // 重力加速度
 float CPlayer::COEF_GRAVITY = -0.15f;
