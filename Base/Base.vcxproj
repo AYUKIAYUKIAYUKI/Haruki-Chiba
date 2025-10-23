@@ -215,6 +215,7 @@ if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
       </PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="Src\MySrc\sound.cpp" />
+    <ClCompile Include="Src\MySrc\state.cpp" />
     <ClCompile Include="Src\MySrc\texture.manager.cpp" />
     <ClCompile Include="Src\MySrc\title.cpp" />
     <ClCompile Include="Src\MySrc\tutorial.cpp" />
@@ -257,6 +258,7 @@ if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
     <ClInclude Include="Src\MySrc\scene.manager.h" />
     <ClInclude Include="Src\MySrc\singleton.h" />
     <ClInclude Include="Src\MySrc\sound.h" />
+    <ClInclude Include="Src\MySrc\state.h" />
     <ClInclude Include="Src\MySrc\texture.manager.h" />
     <ClInclude Include="Src\MySrc\title.h" />
     <ClInclude Include="Src\MySrc\tutorial.h" />

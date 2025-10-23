@@ -12,6 +12,9 @@
 //****************************************************
 #include "object.X.h"
 
+class CPlayerStateBase;
+class CStateMachine;
+
 //****************************************************
 // プレイヤークラスの定義
 //****************************************************
@@ -59,6 +62,11 @@ public:
 	//****************************************************
 	// 静的メンバ変数の宣言 (公開)
 	//****************************************************
+
+	inline float GetMOVE_SPEED()
+	{
+		return COEF_MOVE_SPEED;
+	}
 
 	// デフォルトのファクトリ
 	static std::function<bool(CPlayer*)> s_fpDefaultFactory;
@@ -109,17 +117,45 @@ public:
 	inline const D3DXVECTOR3& GetPosTarget() const                       { return m_PosTarget; }
 	inline void               SetPosTarget(const D3DXVECTOR3& PosTarget) { m_PosTarget = PosTarget; }
 
+	//**//==========================================================================================================
+
+	/**
+	 * @brief 状態を変える処理
+	 * @param [in] a_spState : プレイヤーの状態ポインター
+	 */
+	void ChangeState(std::shared_ptr<CPlayerStateBase> a_spState);
+
+	/**
+	 * @brief 移動処理
+	 * @param [in] fSpeed : 移動値
+	 */
+	void Move(float fSpeed);
+
+	/**
+	 * @brief 飛ぶ処理
+	 */
+	void Jump();
+
+	/**
+	 * @brief 飛んでいる時の処理
+	 */
+	bool InJump();
+
+	/**
+	 * @brief ダメージ処理
+	 */
+	void Damage();
+
+	// かんたん状態遷移
+	void Change(State State, int nLimit, std::function<void()> fpOpt);
+
 private:
 
 	//****************************************************
 	// function
 	//****************************************************
 
-	// かんたん状態遷移
-	void Change(State State, int nLimit, std::function<void()> fpOpt);
-
 	// 操作など
-	void Move(float fSpeed); // 移動
 	bool Gravity();          // 重力加速
 	void SetWave();          // 振動設定
 	void PlayWave();         // 振動再生
@@ -145,4 +181,7 @@ private:
 	// 振動再生用：目標サイズリスト
 	using Michos = std::list<D3DXVECTOR3>;
 	Michos m_vMichos;
+
+	// ステートマシン
+	CStateMachine* m_machine;
 };

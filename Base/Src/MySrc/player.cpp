@@ -16,6 +16,8 @@
 // 初期化処理でXモデルを取得するため
 #include "X.manager.h"
 
+#include "state.h"
+
 //****************************************************
 // usingディレクティブ
 //****************************************************
@@ -89,13 +91,125 @@ CPlayer::CPlayer(OBJ::TYPE Type, OBJ::LAYER Layer)
 	, m_PosTarget(VEC3_ZERO_INIT)
 	, m_afpExecuteState{}
 	, m_vMichos()
+	, m_machine(new CStateMachine())
 {}
 
 //============================================================================
 // デストラクタ
 //============================================================================
 CPlayer::~CPlayer()
-{}
+{
+	//ステイト情報がある時
+	if (m_machine != nullptr)
+	{
+		delete m_machine;
+		m_machine = nullptr;
+	}
+}
+
+//============================================================================
+//状態の変更
+//============================================================================
+void CPlayer::ChangeState(std::shared_ptr<CPlayerStateBase> a_spState)
+{
+	a_spState->SetOwner(this);         //自身を同期
+	m_machine->ChangeState(a_spState); //状態の変更
+}
+
+//============================================================================
+//ジャンプ処理
+//============================================================================
+void CPlayer::Jump()
+{
+	Change(State::JUMP, 0, [this]() -> void
+		{
+			// 加速度：XZ軸：速度を抑えつつ余韻を遺す
+			// 　　　：Y軸 ：ジャンプ力を与える
+			m_Velocity =
+			{
+				m_Velocity.x * COEF_MOVE_SPEED_AIR,
+				COEF_TRIGGER_JUMP,
+				m_Velocity.z * COEF_MOVE_SPEED_AIR
+			};
+
+			// みちょ数
+			const int nMichosRepeat = 3;
+
+			// みちょっと幅
+			std::array<float, nMichosRepeat> afScales =
+			{
+				-0.25f, -0.35f, -0.15f
+			};
+
+			// みちょっとしてみる
+			for (int i = 0; i < nMichosRepeat; ++i)
+			{
+				i % 2 == 0 ?
+					m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+					m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+			}
+
+			// 最後に元に戻す
+			m_vMichos.push_back(VEC3_ONE_INIT);
+		});
+}
+
+
+//============================================================================
+//ジャンプ中処理
+//============================================================================
+bool CPlayer::InJump()
+{
+	// 重力加速
+	bool bLanding = Gravity();
+
+	// 地面に到達したら通常状態へ
+	if (bLanding)
+	{
+		Change(State::DEFAULT, 0, [this]() -> void
+			{
+				// みちょ数
+				const int nMichosRepeat = 5;
+
+				// みちょっと幅
+				std::array<float, nMichosRepeat> afScales =
+				{
+					0.25f, 0.20f, 0.15f, 0.10f, -0.15f
+				};
+
+				// みちょっとしてみる
+				for (int i = 0; i < nMichosRepeat; ++i)
+				{
+					i % 2 == 0 ?
+						m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+						m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+				}
+
+				// 最後に元に戻す
+				m_vMichos.push_back(VEC3_ONE_INIT);
+
+			});
+
+		return true; //地面についた
+
+	}
+
+	return false;    //まだ地面じゃない
+}
+
+
+//============================================================================
+//ダメージ処理
+//============================================================================
+void CPlayer::Damage()
+{
+	bool a = Hit();
+	if (a)
+	{
+		Change(State::DEFAULT, 0, [this]() -> void {});
+	}
+}
+
 
 //============================================================================
 // 初期化処理
@@ -108,53 +222,57 @@ bool CPlayer::Initialize()
 		return false;
 	}
 
+	// 初期状態の状態をセット
+	auto spStandState = std::make_shared<CPlayer_DefaultState>(); //通常状態の情報
+	ChangeState(spStandState);                                    //状態の変更
+
 	// 状態ごとの実行内容を定義していく：通常
 	m_afpExecuteState[static_cast<unsigned char>(State::DEFAULT)] =
 		[this]() -> bool
 	{
-		// 移動
-		Move(COEF_MOVE_SPEED);
+		//// 移動
+		//Move(COEF_MOVE_SPEED);
 
-		if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_B))
-		{
-			Change(State::DAMAGE, 0, [this]() -> void {});
-		}
+		//if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_B))
+		//{
+		//	Change(State::DAMAGE, 0, [this]() -> void {});
+		//}
 
-		// ジャンプ
-		if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
-		{
-			Change(State::JUMP, 0, [this]() -> void
-				{
-					// 加速度：XZ軸：速度を抑えつつ余韻を遺す
-					// 　　　：Y軸 ：ジャンプ力を与える
-					m_Velocity =
-					{
-						m_Velocity.x * COEF_MOVE_SPEED_AIR,
-						COEF_TRIGGER_JUMP,
-						m_Velocity.z * COEF_MOVE_SPEED_AIR
-					};
+		//// ジャンプ
+		//if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
+		//{
+		//	Change(State::JUMP, 0, [this]() -> void
+		//		{
+		//			// 加速度：XZ軸：速度を抑えつつ余韻を遺す
+		//			// 　　　：Y軸 ：ジャンプ力を与える
+		//			m_Velocity =
+		//			{
+		//				m_Velocity.x * COEF_MOVE_SPEED_AIR,
+		//				COEF_TRIGGER_JUMP,
+		//				m_Velocity.z * COEF_MOVE_SPEED_AIR
+		//			};
 
-					// みちょ数
-					const int nMichosRepeat = 3;
+		//			// みちょ数
+		//			const int nMichosRepeat = 3;
 
-					// みちょっと幅
-					std::array<float, nMichosRepeat> afScales =
-					{
-						-0.25f, -0.35f, -0.15f
-					};
+		//			// みちょっと幅
+		//			std::array<float, nMichosRepeat> afScales =
+		//			{
+		//				-0.25f, -0.35f, -0.15f
+		//			};
 
-					// みちょっとしてみる
-					for (int i = 0; i < nMichosRepeat; ++i)
-					{
-						i % 2 == 0 ?
-							m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
-							m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
-					}
+		//			// みちょっとしてみる
+		//			for (int i = 0; i < nMichosRepeat; ++i)
+		//			{
+		//				i % 2 == 0 ?
+		//					m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+		//					m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+		//			}
 
-					// 最後に元に戻す
-					m_vMichos.push_back(VEC3_ONE_INIT);
-				});
-		}
+		//			// 最後に元に戻す
+		//			m_vMichos.push_back(VEC3_ONE_INIT);
+		//		});
+		//}
 
 		return true;
 	};
@@ -163,35 +281,35 @@ bool CPlayer::Initialize()
 	m_afpExecuteState[static_cast<unsigned char>(State::JUMP)] =
 		[this]() -> bool
 	{
-		// 重力加速
-		bool bLanding = Gravity();
+		//// 重力加速
+		//bool bLanding = Gravity();
 
-		// 地面に到達したら通常状態へ
-		if (bLanding)
-		{
-			Change(State::DEFAULT, 0, [this]() -> void
-				{
-					// みちょ数
-					const int nMichosRepeat = 5;
+		//// 地面に到達したら通常状態へ
+		//if (bLanding)
+		//{
+		//	Change(State::DEFAULT, 0, [this]() -> void
+		//		{
+		//			// みちょ数
+		//			const int nMichosRepeat = 5;
 
-					// みちょっと幅
-					std::array<float, nMichosRepeat> afScales =
-					{
-						0.25f, 0.20f, 0.15f, 0.10f, -0.15f
-					};
+		//			// みちょっと幅
+		//			std::array<float, nMichosRepeat> afScales =
+		//			{
+		//				0.25f, 0.20f, 0.15f, 0.10f, -0.15f
+		//			};
 
-					// みちょっとしてみる
-					for (int i = 0; i < nMichosRepeat; ++i)
-					{
-						i % 2 == 0 ?
-							m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
-							m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
-					}
+		//			// みちょっとしてみる
+		//			for (int i = 0; i < nMichosRepeat; ++i)
+		//			{
+		//				i % 2 == 0 ?
+		//					m_vMichos.push_back({ 1.0f + afScales[i], 1.0f - afScales[i], 1.0f + afScales[i] }) :
+		//					m_vMichos.push_back({ 1.0f - afScales[i], 1.0f + afScales[i], 1.0f - afScales[i] });
+		//			}
 
-					// 最後に元に戻す
-					m_vMichos.push_back(VEC3_ONE_INIT);
-				});
-		}
+		//			// 最後に元に戻す
+		//			m_vMichos.push_back(VEC3_ONE_INIT);
+		//		});
+		//}
 
 		return true;
 	};
@@ -207,11 +325,11 @@ bool CPlayer::Initialize()
 	m_afpExecuteState[static_cast<unsigned char>(State::DAMAGE)] =
 		[this]() -> bool
 	{
-		bool a = Hit();
+		/*bool a = Hit();
 		if (a)
 		{
 			Change(State::DEFAULT, 0, [this]() -> void {});
-		}
+		}*/
 		return true;
 	};
 
@@ -235,8 +353,10 @@ void CPlayer::Update()
 	// 数値編集
 	ValueEdit();
 
+	m_machine->Update(); //ステートの更新処理
+
 	// かんたんステートの実行
-	m_afpExecuteState[static_cast<unsigned char>(m_State)]();
+	//m_afpExecuteState[static_cast<unsigned char>(m_State)]();
 
 	// 振動再生
 	PlayWave();
@@ -302,6 +422,8 @@ void CPlayer::Change(State State, int nLimit, std::function<void()> fpOpt)
 //============================================================================
 void CPlayer::Move(float fSpeed)
 {
+	//m_State = State::HIP;
+
 	// 入力方向を取得
 	std::optional<float> opDir = CInputManager::s_fpGetInputDir();
 
