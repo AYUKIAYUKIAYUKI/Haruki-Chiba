@@ -48,6 +48,11 @@ public:
 	* @brief ステートが終了する時に一度だけ呼ばれる関数
 	*/
 	virtual void OnExit() {}
+
+	/**
+	* @brief 現在のステートを教えるよ
+	*/
+	virtual const char* GetStateName() = 0;
 };
 
 
@@ -99,6 +104,11 @@ public:
 			m_spNowState->OnUpdate();
 		}
 	}
+
+	/**
+	 * @brief 現在のステートを返すよ
+	 */
+	CStateBase* GetState() { return m_spNowState.get(); };
 
 private:
 	std::shared_ptr<CStateBase> m_spNowState = nullptr; //状態の基礎クラスのスマートポインター
@@ -155,6 +165,7 @@ public:
 	}
 
 	inline CPlayer* GetPlayer() { return m_pPlayer; }      //プレイヤー情報を返す
+
 private:
 	CPlayer* m_pPlayer = nullptr;                          //プレイヤーのポインター
 };
@@ -193,6 +204,11 @@ public:
 	 * @param  オーバライドしている
 	 */
 	void OnExit()override {};
+
+	/**
+	* @brief 現在のステートを教えるよ
+	*/
+	const char* GetStateName()override;
 };
 
 
@@ -229,6 +245,11 @@ public:
 	 * @param  オーバライドしている
 	 */
 	void OnExit()override {};
+
+	/**
+	* @brief 現在のステートを教えるよ
+	*/
+	const char* GetStateName()override;
 };
 
 
@@ -265,6 +286,11 @@ public:
 	 * @param  オーバライドしている
 	 */
 	void OnExit()override {};
+
+	/**
+	* @brief 現在のステートを教えるよ
+	*/
+	const char* GetStateName()override;
 };
 
 
@@ -301,4 +327,9 @@ public:
 	 * @param  オーバライドしている
 	 */
 	void OnExit()override {};
+
+	/**
+	* @brief 現在のステートを教えるよ
+	*/
+	const char* GetStateName()override;
 };

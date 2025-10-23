@@ -577,9 +577,8 @@ void CPlayer::ValueEdit()
 //============================================================================
 const char* CPlayer::ToString(State s)
 {
-	std::vector<const char*> StateName = { "DEFAULT","JUMP","HIP","DAMAGE" };
-
-	return StateName[static_cast<int>(s)];
+	const char* StateName = m_machine->GetState()->GetStateName();
+	return StateName;
 }
 
 //============================================================================
