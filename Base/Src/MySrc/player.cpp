@@ -17,6 +17,7 @@
 #include "X.manager.h"
 
 #include "state.h"
+#include "object.manager.h"
 
 //****************************************************
 // usingディレクティブ
@@ -503,14 +504,24 @@ void CPlayer::PlayWave()
 //============================================================================
 bool CPlayer::Hit()
 {
-	static int Num = 0;
-	Num++;
+	////プレイヤーが格納されているリストを取得
+	//std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
-	if (Num > 120)
-	{
-		Num = 0;
-		return true;
-	}
+	//// x軸の距離
+	//float vectorX = c2X - c1X;
+
+	//// z軸の距離
+	//float vectorZ = c2Y - c1Y;
+	//
+	//// 中心同士の距離
+	//float distance = std::sqrt((vectorX * vectorX) + (vectorZ * vectorZ));
+
+	//// 中心同士の距離が半径の和より小さければtrue
+	//if (distance <= double(c1R + c2R)) 
+	//{
+	//	return true;
+	//}
+
 	return false;
 }
 
@@ -559,7 +570,7 @@ void CPlayer::ValueEdit()
 		ImGui::Text("Velocity:(%.2f, %.2f, %.2f)", m_Velocity.x, m_Velocity.y, m_Velocity.z);
 
 		// ステートを出力
-		ImGui::Text("State:%s", ToString(m_State));
+		ImGui::Text("State:%s", ToString());
 	}
 	ImGui::End();
 
@@ -575,7 +586,7 @@ void CPlayer::ValueEdit()
 //============================================================================
 // 現在のステートをみたい
 //============================================================================
-const char* CPlayer::ToString(State s)
+const char* CPlayer::ToString()
 {
 	const char* StateName = m_machine->GetState()->GetStateName();
 	return StateName;

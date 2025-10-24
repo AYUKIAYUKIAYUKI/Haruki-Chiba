@@ -57,6 +57,9 @@ class CPlayer : public CObjectX
 	// 制動力
 	static float COEF_BRAKING;
 
+	// 半径
+	static float RADIUS;
+
 public:
 
 	//****************************************************
@@ -161,7 +164,7 @@ private:
 	void PlayWave();         // 振動再生
 	void ValueEdit();        // 数値編集
 	bool Hit();				 // 攻撃当たった処理
-	const char* ToString(State s);//現在のステートを返す処理
+	const char* ToString();//現在のステートを返す処理
 	void ExportStatus();//ステータスを書き出す
 	//****************************************************
 	// data
