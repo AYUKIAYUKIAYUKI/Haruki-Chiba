@@ -49,6 +49,8 @@ float CPlayer::COEF_MOVE_SPEED_AIR = 0.3f;
 // 制動力
 float CPlayer::COEF_BRAKING = 0.5f;
 
+//半径
+float CPlayer::RADIUS = 10.0f;
 //****************************************************
 // 静的メンバ変数の定義 (公開)
 //****************************************************
@@ -351,39 +353,50 @@ void CPlayer::Finalize()
 //============================================================================
 void CPlayer::Update()
 {
-	// 数値編集
-	ValueEdit();
+	CObject* self = this;
+	std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
-	m_machine->Update(); //ステートの更新処理
+	if (!playerlist.empty() && self == playerlist.front())
+	{
+		// 数値編集
+		ValueEdit();
 
-	// かんたんステートの実行
-	//m_afpExecuteState[static_cast<unsigned char>(m_State)]();
+		m_machine->Update(); //ステートの更新処理
 
-	// 振動再生
-	PlayWave();
+		// かんたんステートの実行
+		//m_afpExecuteState[static_cast<unsigned char>(m_State)]();
 
-	// 目標位置：毎回、加速度を加える
-	m_PosTarget += m_Velocity;
+		// 振動再生
+		PlayWave();
 
-	// 現在サイズ -> 目標サイズ : 指数減衰
-	Vec3 Size = GetSize();
-	ExponentialDecay(Size, m_SizeTarget, COEF_CORRECT_TARGET);
-	SetSize(Size);
+		// 目標位置：毎回、加速度を加える
+		m_PosTarget += m_Velocity;
 
-	// 現在向き -> 目標向き : 指数減衰
-	Vec3 Rot = GetRot();
-	NormalizeAngleToDest(Rot.y, m_RotTarget.y);
-	ExponentialDecay(Rot, m_RotTarget, COEF_CORRECT_TARGET);
-	SetRot(Rot);
+		// 現在サイズ -> 目標サイズ : 指数減衰
+		Vec3 Size = GetSize();
+		ExponentialDecay(Size, m_SizeTarget, COEF_CORRECT_TARGET);
+		SetSize(Size);
 
-	// 現在位置 -> 目標位置 : 指数減衰
-	Vec3 Pos = GetPos();
-	ExponentialDecay(Pos, m_PosTarget, COEF_CORRECT_TARGET);
-	SetPos(Pos);
+		// 現在向き -> 目標向き : 指数減衰
+		Vec3 Rot = GetRot();
+		NormalizeAngleToDest(Rot.y, m_RotTarget.y);
+		ExponentialDecay(Rot, m_RotTarget, COEF_CORRECT_TARGET);
+		SetRot(Rot);
+
+		// 現在位置 -> 目標位置 : 指数減衰
+		Vec3 Pos = GetPos();
+		ExponentialDecay(Pos, m_PosTarget, COEF_CORRECT_TARGET);
+		SetPos(Pos);
+
+	}
+
 
 	// オブジェクト(Xモデル)の更新処理
 	// 行列の再計算を含んでいるため更新処理の終わりに呼びます
 	CObjectX::Update();
+
+	Hit();
+
 }
 
 //============================================================================
@@ -504,24 +517,32 @@ void CPlayer::PlayWave()
 //============================================================================
 bool CPlayer::Hit()
 {
-	////プレイヤーが格納されているリストを取得
-	//std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
+	//プレイヤーが格納されているリストを取得
+	std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
-	//// x軸の距離
-	//float vectorX = c2X - c1X;
+	//コライダーの更新処理
+	for (auto other : playerlist)
+	{
+		if (other != this)
+		{
+			CPlayer* pOtherPlayer = dynamic_cast<CPlayer*>(other);
 
-	//// z軸の距離
-	//float vectorZ = c2Y - c1Y;
-	//
-	//// 中心同士の距離
-	//float distance = std::sqrt((vectorX * vectorX) + (vectorZ * vectorZ));
+			// x軸の距離
+			float vectorX = GetPos().x - pOtherPlayer->GetPos().x;
 
-	//// 中心同士の距離が半径の和より小さければtrue
-	//if (distance <= double(c1R + c2R)) 
-	//{
-	//	return true;
-	//}
+			// z軸の距離
+			float vectorZ = GetPos().y - pOtherPlayer->GetPos().y;
 
+			// 中心同士の距離
+			float distance = std::sqrt((vectorX * vectorX) + (vectorZ * vectorZ));
+
+			// 中心同士の距離が半径の和より小さければtrue
+			if (distance <= double(RADIUS + RADIUS))
+			{
+				int a = 0;
+			}
+		}
+	}
 	return false;
 }
 

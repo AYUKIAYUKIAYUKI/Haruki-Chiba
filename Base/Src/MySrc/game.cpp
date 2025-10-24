@@ -102,7 +102,10 @@ bool CGame::Initialize()
 	using namespace OBJ;
 
 	// ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
-	CObject::Create<CPlayer>(TYPE::PLAYER, LAYER::DEFAULT, CPlayer::s_fpDefaultFactory);
+	auto player1 = CObject::Create<CPlayer>(TYPE::PLAYER, LAYER::DEFAULT, CPlayer::s_fpDefaultFactory);
+	auto player2 = CObject::Create<CPlayer>(TYPE::PLAYER, LAYER::DEFAULT, CPlayer::s_fpDefaultFactory);
+	player2->SetPos({ player2->GetPos().x + 30.0f ,player2->GetPos().y ,player2->GetPos().z });
+	player2->SetPosTarget(player2->GetPos());
 
 	return true;
 }
