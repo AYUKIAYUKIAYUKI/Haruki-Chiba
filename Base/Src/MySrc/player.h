@@ -152,6 +152,9 @@ public:
 	// かんたん状態遷移
 	void Change(State State, int nLimit, std::function<void()> fpOpt);
 
+	bool Hit();				 // 攻撃当たった処理
+
+	float GetRadius();		//半径を返す
 private:
 
 	//****************************************************
@@ -163,9 +166,9 @@ private:
 	void SetWave();          // 振動設定
 	void PlayWave();         // 振動再生
 	void ValueEdit();        // 数値編集
-	bool Hit();				 // 攻撃当たった処理
-	const char* ToString();//現在のステートを返す処理
 	void ExportStatus();//ステータスを書き出す
+	const char* ToString();//現在のステートを返す処理
+
 	//****************************************************
 	// data
 	//****************************************************

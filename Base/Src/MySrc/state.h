@@ -332,4 +332,7 @@ public:
 	* @brief 現在のステートを教えるよ
 	*/
 	const char* GetStateName()override;
+
+private:
+	int nCount = 0;
 };

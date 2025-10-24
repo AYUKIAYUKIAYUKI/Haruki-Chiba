@@ -438,6 +438,17 @@ namespace useful
 	 */
 	D3DXCOLOR JsonConvertToXCol(const nlohmann::json& Json);
 
+	/**
+	 * ‰~‚Ì”»’è
+	 * •Ô‚è’l‚Íbool
+	 *
+	 * MyPos -> Ž©•ª‚ÌˆÊ’u
+	 * OtherPos -> ‘ŠŽè‚ÌˆÊ’u
+	 * MyRadius -> Ž©•ª‚Ì”¼Œa
+	 * OtherRadius -> ‘ŠŽè‚Ì”¼Œa
+	 */
+	bool CircleCollision(Vec3 MyPos, Vec3 OtherPos, float MyRadius, float OtherRadius);
+
 	//****************************************************
 	// –¼‘O‹óŠÔMIS‚ð’è‹`
 	//****************************************************

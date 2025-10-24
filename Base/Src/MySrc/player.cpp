@@ -206,11 +206,7 @@ bool CPlayer::InJump()
 //============================================================================
 void CPlayer::Damage()
 {
-	bool a = Hit();
-	if (a)
-	{
-		Change(State::DEFAULT, 0, [this]() -> void {});
-	}
+	Change(State::DEFAULT, 0, [this]() -> void {});
 }
 
 
@@ -356,12 +352,12 @@ void CPlayer::Update()
 	CObject* self = this;
 	std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
+	m_machine->Update(); //ステートの更新処理
+
 	if (!playerlist.empty() && self == playerlist.front())
 	{
 		// 数値編集
 		ValueEdit();
-
-		m_machine->Update(); //ステートの更新処理
 
 		// かんたんステートの実行
 		//m_afpExecuteState[static_cast<unsigned char>(m_State)]();
@@ -517,33 +513,9 @@ void CPlayer::PlayWave()
 //============================================================================
 bool CPlayer::Hit()
 {
-	//プレイヤーが格納されているリストを取得
-	std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
-
-	//コライダーの更新処理
-	for (auto other : playerlist)
-	{
-		if (other != this)
-		{
-			CPlayer* pOtherPlayer = dynamic_cast<CPlayer*>(other);
-
-			// x軸の距離
-			float vectorX = GetPos().x - pOtherPlayer->GetPos().x;
-
-			// z軸の距離
-			float vectorZ = GetPos().y - pOtherPlayer->GetPos().y;
-
-			// 中心同士の距離
-			float distance = std::sqrt((vectorX * vectorX) + (vectorZ * vectorZ));
-
-			// 中心同士の距離が半径の和より小さければtrue
-			if (distance <= double(RADIUS + RADIUS))
-			{
-				int a = 0;
-			}
-		}
-	}
-	return false;
+	Change(State::DAMAGE, 0, [this]() -> void {});
+	
+	return true;
 }
 
 //============================================================================
@@ -566,11 +538,11 @@ void CPlayer::ValueEdit()
 	MIS::MyImGuiShortcut_BeginWindow(reinterpret_cast<const char*>(u8"プレイヤーの各種パラメータ操作"));
 	{
 		ImGui::DragFloat(reinterpret_cast<const char*>(u8"目標値への補間係数"), &fCoefCrorrectTarget, fSpeed, fSpeed, 1.0f);
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"重力"),               &fCoefGravity,		  fSpeed, FLT_MIN, 0.0f);
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"ジャンプ力"),			&fCoefTriggerJump,    fSpeed, fSpeed, FLT_MAX);
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"地上の移動速度"),		&fCoefMoveSpeed,      fSpeed, fSpeed, FLT_MAX);
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"空中の移動速度"),		&fCoefMoveSpeedAir,   fSpeed, fSpeed, FLT_MAX);
-		ImGui::DragFloat(reinterpret_cast<const char*>(u8"制動力"),				&fCoefBraking,        fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"重力"), &fCoefGravity, fSpeed, FLT_MIN, 0.0f);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"ジャンプ力"), &fCoefTriggerJump, fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"地上の移動速度"), &fCoefMoveSpeed, fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"空中の移動速度"), &fCoefMoveSpeedAir, fSpeed, fSpeed, FLT_MAX);
+		ImGui::DragFloat(reinterpret_cast<const char*>(u8"制動力"), &fCoefBraking, fSpeed, fSpeed, FLT_MAX);
 		if (ImGui::Button(reinterpret_cast<const char*>(u8"書き出す")))
 		{
 			ExportStatus();
@@ -592,6 +564,7 @@ void CPlayer::ValueEdit()
 
 		// ステートを出力
 		ImGui::Text("State:%s", ToString());
+
 	}
 	ImGui::End();
 
@@ -638,4 +611,12 @@ void CPlayer::ExportStatus()
 
 	writing_file.close();
 
+}
+
+//============================================================================
+// 半径を返す
+//============================================================================
+float CPlayer::GetRadius()
+{
+	return RADIUS;
 }

@@ -648,3 +648,27 @@ void useful::MIS::MyImGuiShortcut_ResetVector(const char* pLabel, Vec3& Vec3, fl
 		Vec3 = { fInitValue, fInitValue, fInitValue };
 	}
 }
+
+
+//============================================================================
+// VectorŒn\‘¢‘Ì‚ÌƒŠƒZƒbƒg‘€ì - ‡C
+//============================================================================
+bool useful::CircleCollision(Vec3 MyPos, Vec3 OtherPos, float MyRadius, float OtherRadius)
+{
+	// x²‚Ì‹——£
+	float vectorX = MyPos.x - OtherPos.x;
+
+	// y²‚Ì‹——£
+	float vectorZ = MyPos.y - OtherPos.y;
+
+	// ’†S“¯m‚Ì‹——£
+	float distance = std::sqrt((vectorX * vectorX) + (vectorZ * vectorZ));
+
+	// ’†S“¯m‚Ì‹——£‚ª”¼Œa‚Ì˜a‚æ‚è¬‚³‚¯‚ê‚Îtrue
+	if (distance <= (MyRadius + OtherRadius))
+	{
+		return true;
+	}
+
+	return false;
+}

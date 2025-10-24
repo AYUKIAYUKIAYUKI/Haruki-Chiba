@@ -10,7 +10,7 @@
 //インクルード
 #include "state.h"           
 #include "input.manager.h"   //キーボード処理
-
+#include "object.manager.h"
 
 //========================================
 //名前空間
@@ -167,6 +167,40 @@ void CPlayer_JumpState::OnUpdate()
 	//地面についた時(処理を完結)
 	if (GetPlayer()->InJump() == true)
 	{
+
+		//プレイヤーが格納されているリストを取得
+		std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
+
+		//コライダーの更新処理
+		for (auto other : playerlist)
+		{
+ 			if (other == GetPlayer())
+			{
+				continue;
+			}
+
+			CPlayer* pOtherPlayer = dynamic_cast<CPlayer*>(other);
+
+			//円の判定
+			bool IsHit = useful::CircleCollision(
+				GetPlayer()->GetPos(),		//自分の位置
+				pOtherPlayer->GetPos(),		//相手の位置
+				GetPlayer()->GetRadius(),	//自分の半径
+				pOtherPlayer->GetRadius()	//相手の半径
+			);
+
+			if (IsHit)
+			{//当たってた
+
+				auto NextState = std::make_shared<CPlayer_DamageState>();
+				pOtherPlayer->Hit();
+				pOtherPlayer->ChangeState(NextState);
+			}
+		}
+
+		//ダメージ処理
+		GetPlayer()->Damage();
+
 		TChangeState<CPlayer_DefaultState>(); //通常状態へ移行
 		return;
 	}
@@ -190,9 +224,15 @@ const char* CPlayer_JumpState::GetStateName()
 //========================================
 void CPlayer_DamageState::OnUpdate()
 {
-	GetPlayer()->Damage(); //ダメージ処理
+	nCount++;
 
-	TChangeState<CPlayer_DefaultState>();     //通常状態へ移行
+	if (nCount > 120)
+	{
+		GetPlayer()->Damage(); //ダメージ処理
+
+		TChangeState<CPlayer_DefaultState>();     //通常状態へ移行
+	}
+	
 	return;
 }
 
