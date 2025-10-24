@@ -82,6 +82,10 @@ void CPlayer_DefaultState::OnUpdate()
 	{
 		GetPlayer()->Move(GetPlayer()->GetMOVE_SPEED()); //ˆÚ“®ˆ— 
 	}
+	else
+	{
+		GetPlayer()->SetVelocity({ 0.0f,0.0f,0.0f });
+	}
 
 	//ˆÚ“®ƒL[‚ª‰Ÿ‚³‚ê‚½
 	if (MoveKeyflag() == true)
