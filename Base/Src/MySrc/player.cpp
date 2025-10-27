@@ -352,12 +352,12 @@ void CPlayer::Update()
 	CObject* self = this;
 	std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
-	m_machine->Update(); //ステートの更新処理
-
 	if (!playerlist.empty() && self == playerlist.front())
 	{
 		// 数値編集
 		ValueEdit();
+
+		m_machine->Update(); //ステートの更新処理
 
 		// かんたんステートの実行
 		//m_afpExecuteState[static_cast<unsigned char>(m_State)]();

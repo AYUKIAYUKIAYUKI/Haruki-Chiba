@@ -21,6 +21,7 @@ namespace OBJ
 	{
 		NONE = 0, // ñ≥Çµ
 		PLAYER,   // ÉvÉåÉCÉÑÅ[
+		IMPUCT,	  // è’åÇîg
 		MAX
 	};
 

@@ -11,6 +11,7 @@
 #include "state.h"           
 #include "input.manager.h"   //キーボード処理
 #include "object.manager.h"
+#include "impact.h"
 
 //========================================
 //名前空間
@@ -168,34 +169,25 @@ void CPlayer_JumpState::OnUpdate()
 	if (GetPlayer()->InJump() == true)
 	{
 
+		//衝撃波生成
+		using namespace OBJ;
+		auto pImpact = CObject::Create<CImpact>(TYPE::IMPUCT, LAYER::DEFAULT, CImpact::s_fpDefaultFactory);
+		pImpact->SetPos(GetPlayer()->GetPos());			//位置を保存
+		pImpact->SetCreator(GetPlayer());				//発生させた者を保存
+		pImpact->SetRadius(GetPlayer()->GetRadius());	//半径を保存
+		pImpact->Start();
+
 		//プレイヤーが格納されているリストを取得
 		std::list<CObject*> playerlist = CObjectManager::RefInstance().RefObjList(OBJ::TYPE::PLAYER);
 
 		//コライダーの更新処理
 		for (auto other : playerlist)
 		{
- 			if (other == GetPlayer())
-			{
+			if (other == GetPlayer())
+			{//発生させた者ではない
 				continue;
 			}
 
-			CPlayer* pOtherPlayer = dynamic_cast<CPlayer*>(other);
-
-			//円の判定
-			bool IsHit = useful::CircleCollision(
-				GetPlayer()->GetPos(),		//自分の位置
-				pOtherPlayer->GetPos(),		//相手の位置
-				GetPlayer()->GetRadius(),	//自分の半径
-				pOtherPlayer->GetRadius()	//相手の半径
-			);
-
-			if (IsHit)
-			{//当たってた
-
-				auto NextState = std::make_shared<CPlayer_DamageState>();
-				pOtherPlayer->Hit();
-				pOtherPlayer->ChangeState(NextState);
-			}
 		}
 
 		//ダメージ処理
