@@ -11,7 +11,8 @@
 #include "state.h"           
 #include "input.manager.h"   //キーボード処理
 #include "object.manager.h"
-#include "impact.h"
+#include <impact.h>
+
 
 //========================================
 //名前空間
@@ -39,17 +40,16 @@ bool CPlayerStateBase::MoveKeyflag()
 	return false;
 }
 
-
 //========================================
 //プレイヤージャンプ処理を呼ぶ処理
 //========================================
-bool CPlayerStateBase::CallJump()
+bool CPlayerStateBase::CallJump(CPlayer* pPlayer)
 {
 	//SPACEキーが押された時
 	if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
 	{
-		GetPlayer()->Jump();                  //ジャンプ処理
-		TChangeState<CPlayer_JumpState>();    //ジャンプ状態へ移行
+		pPlayer->Jump(); //ジャンプ処理
+		GetMacine()->ChangeState<CPlayer_JumpState>();    //ジャンプ状態へ移行
 
 		return true;
 	}
@@ -65,84 +65,115 @@ bool CPlayerStateBase::CallJump()
 //========================================
 //通常状態の一度だけ呼ばれる処理
 //========================================
-void CPlayer_DefaultState::OnStart()
+void CPlayer_DefaultState::OnStart(CPlayer* pPlayer)
 {
-	//GetPlayer()->SetVelocity({ 0.0f,0.0f,0.0f });                           //加速度の初期化
-	//GetPlayer()->Change(CPlayer::State::DEFAULT, 0, [this]() -> void {}); //現在のプレイヤーステートを変える
+	pPlayer->Null();
+	m_bOneFlag = false; //フラグの初期化
 }
-
 
 //========================================
 //通常状態の更新処理
 //========================================
-void CPlayer_DefaultState::OnUpdate()
+void CPlayer_DefaultState::OnUpdate(CPlayer* pPlayer)
 {
 	//加速度が、限りなく０に近くない時（ずっと処理が回らないように） NOTE:汚いがいったん代用
-	if (GetPlayer()->GetVelocity().x > PLAYER_INFO::f_Check_Velocity || GetPlayer()->GetVelocity().x < -PLAYER_INFO::f_Check_Velocity
-		|| GetPlayer()->GetVelocity().z > PLAYER_INFO::f_Check_Velocity || GetPlayer()->GetVelocity().z < -PLAYER_INFO::f_Check_Velocity)
+	if (pPlayer->GetVelocity().x > PLAYER_INFO::f_Check_Velocity || pPlayer->GetVelocity().x < -PLAYER_INFO::f_Check_Velocity
+		|| pPlayer->GetVelocity().z > PLAYER_INFO::f_Check_Velocity || pPlayer->GetVelocity().z < -PLAYER_INFO::f_Check_Velocity)
 	{
-		GetPlayer()->Move(GetPlayer()->GetMOVE_SPEED()); //移動処理 
+		pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
 	}
 	else
 	{
-		GetPlayer()->SetVelocity({ 0.0f,0.0f,0.0f });
+		//フラグがoff
+		if (m_bOneFlag == false)
+		{
+			pPlayer->SetVelocity({ 0.0f,0.0f,0.0f }); //加速度の初期化
+			m_bOneFlag = true; //フラグon=初期化されるまでは通さない
+		}
 	}
 
 	//移動キーが押された時
 	if (MoveKeyflag() == true)
 	{
-		TChangeState<CPlayer_MoveState>();    //移動状態へ移行
-		return;
+		GetMacine()->ChangeState<CPlayer_MoveState>(); //移動状態へ移行
 	}
-
 
 	//ジャンプ処理
-	if (CallJump() == true)
+	else if (CallJump(pPlayer) == true)
 	{
-		return;
-	}
 
+	}
 
 	//Bキーが押された時
-	if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_B))
+	else if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_B))
 	{
-		TChangeState<CPlayer_DamageState>();  //ダメージ状態へ移行
-		return;
+		GetMacine()->ChangeState<CPlayer_DamageState>();  //ダメージ状態へ移行
 	}
+
+	//Tキーが押された時
+	else if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_T))
+	{
+		GetMacine()->ChangeState<CPlayer_OsiriState>();  //お尻状態へ移行
+	}
+}
+
+//========================================
+//通常状態の一度だけ呼ばれる終了処理
+//========================================
+void CPlayer_DefaultState::OnExit(CPlayer* pPlayer)
+{
+	pPlayer->Null();
 }
 
 //========================================
 //現在のステートを教えるよ
 //========================================
 const char* CPlayer_DefaultState::GetStateName()
-{ 
+{
 	const char* NowState = "Default";
-	return NowState ;
+	return NowState;
 }
+
 
 //==================================================================================================================================================
 //プレイヤーの移動状態処理
 //==================================================================================================================================================
 
 //========================================
+//移動状態の一度だけ呼ばれる初期処理
+//========================================
+void CPlayer_MoveState::OnStart(CPlayer* pPlayer)
+{
+	pPlayer->Null();
+}
+
+//========================================
 //移動状態の更新処理
 //========================================
-void CPlayer_MoveState::OnUpdate()
+void CPlayer_MoveState::OnUpdate(CPlayer* pPlayer)
 {
-	GetPlayer()->Move(GetPlayer()->GetMOVE_SPEED()); //移動処理 
-
-	//ジャンプ処理
-	if (CallJump() == true)
-	{
-		return;
-	}
+	pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
 
 	//移動キーが押されていない時
 	if (MoveKeyflag() == false)
 	{
-		TChangeState<CPlayer_DefaultState>(); //通常状態へ移行
+		GetMacine()->ChangeState<CPlayer_DefaultState>(); //通常状態へ移行
 		return;
 	}
+
+	//ジャンプ処理
+	else if (CallJump(pPlayer) == true)
+	{
+		return;
+	}
+}
+
+//========================================
+//移動状態の一度だけ呼ばれる終了処理
+//========================================
+void CPlayer_MoveState::OnExit(CPlayer* pPlayer)
+{
+	pPlayer->Null();
 }
 
 //========================================
@@ -154,27 +185,78 @@ const char* CPlayer_MoveState::GetStateName()
 	return NowState;
 }
 
+
+//==================================================================================================================================================
+//プレイヤーのお尻状態処理
+//==================================================================================================================================================
+
+//========================================
+//お尻状態の一度だけ呼ばれる初期処理
+//========================================
+void CPlayer_OsiriState::OnStart(CPlayer* pPlayer)
+{
+	pPlayer->Null();
+}
+
+//========================================
+//お尻状態の更新処理
+//========================================
+void CPlayer_OsiriState::OnUpdate(CPlayer* pPlayer)
+{
+	pPlayer->Null();
+	//Yキーが押された時
+	if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_Y))
+	{
+		GetMacine()->ChangeState<CPlayer_DefaultState>();  //通常状態へ移行
+	}
+}
+
+//========================================
+//お尻状態の一度だけ呼ばれる終了処理
+//========================================
+void CPlayer_OsiriState::OnExit(CPlayer* pPlayer)
+{
+	pPlayer->Null();
+}
+
+//========================================
+//現在のステートを教えるよ
+//========================================
+const char* CPlayer_OsiriState::GetStateName()
+{
+	const char* NowState = "HipTime";
+	return NowState;
+}
+
+
 //==================================================================================================================================================
 //プレイヤーのジャンプ状態処理
 //==================================================================================================================================================
 
 //========================================
+//ジャンプ状態の一度だけ呼ばれる初期処理
+//========================================
+void CPlayer_JumpState::OnStart(CPlayer* pPlayer)
+{
+	pPlayer->Null();
+}
+
+//========================================
 //ジャンプ状態の更新処理
 //========================================
-void CPlayer_JumpState::OnUpdate()
+void CPlayer_JumpState::OnUpdate(CPlayer* pPlayer)
 {
-	GetPlayer()->Move(GetPlayer()->GetMOVE_SPEED()); //移動処理 
+	pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
 
 	//地面についた時(処理を完結)
-	if (GetPlayer()->InJump() == true)
+	if (pPlayer->InJump() == true)
 	{
-
 		//衝撃波生成
 		using namespace OBJ;
 		auto pImpact = CObject::Create<CImpact>(TYPE::IMPUCT, LAYER::DEFAULT, CImpact::s_fpDefaultFactory);
-		pImpact->SetPos(GetPlayer()->GetPos());			//位置を保存
-		pImpact->SetCreator(GetPlayer());				//発生させた者を保存
-		pImpact->SetRadius(GetPlayer()->GetRadius());	//半径を保存
+		pImpact->SetPos(pPlayer->GetPos());			//位置を保存
+		pImpact->SetCreator(pPlayer);				//発生させた者を保存
+		pImpact->SetRadius(pPlayer->GetRadius());	//半径を保存
 		pImpact->Start();
 
 		//プレイヤーが格納されているリストを取得
@@ -183,7 +265,7 @@ void CPlayer_JumpState::OnUpdate()
 		//コライダーの更新処理
 		for (auto other : playerlist)
 		{
-			if (other == GetPlayer())
+			if (other == pPlayer)
 			{//発生させた者ではない
 				continue;
 			}
@@ -191,11 +273,19 @@ void CPlayer_JumpState::OnUpdate()
 		}
 
 		//ダメージ処理
-		GetPlayer()->Damage();
+		pPlayer->Damage();
 
-		TChangeState<CPlayer_DefaultState>(); //通常状態へ移行
+		GetMacine()->ChangeState<CPlayer_DefaultState>(); //通常状態へ移行
 		return;
 	}
+}
+
+//========================================
+//ジャンプ状態の一度だけ呼ばれる終了処理
+//========================================
+void CPlayer_JumpState::OnExit(CPlayer* pPlayer)
+{
+	pPlayer->Null();
 }
 
 //========================================
@@ -207,25 +297,42 @@ const char* CPlayer_JumpState::GetStateName()
 	return NowState;
 }
 
+
 //==================================================================================================================================================
 //プレイヤーのダメージ状態処理
 //==================================================================================================================================================
 
 //========================================
+//ジャンプ状態の一度だけ呼ばれる初期処理
+//========================================
+void CPlayer_DamageState::OnStart(CPlayer* pPlayer)
+{
+	pPlayer->SetVelocity({ 0.0f,0.0f,0.0f }); //加速度の初期化(動かないようにする)
+}
+
+//========================================
 //ダメージ状態の更新処理
 //========================================
-void CPlayer_DamageState::OnUpdate()
+void CPlayer_DamageState::OnUpdate(CPlayer* pPlayer)
 {
 	nCount++;
 
 	if (nCount > 120)
 	{
-		GetPlayer()->Damage(); //ダメージ処理
+		pPlayer->Damage(); //ダメージ処理
 
-		TChangeState<CPlayer_DefaultState>();     //通常状態へ移行
+		GetMacine()->ChangeState<CPlayer_DefaultState>();     //通常状態へ移行
 	}
-	
+
 	return;
+}
+
+//========================================
+//ジャンプ状態の一度だけ呼ばれる終了処理
+//========================================
+void CPlayer_DamageState::OnExit(CPlayer* pPlayer)
+{
+	pPlayer->Null();
 }
 
 //========================================

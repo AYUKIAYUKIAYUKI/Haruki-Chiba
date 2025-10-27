@@ -94,7 +94,7 @@ CPlayer::CPlayer(OBJ::TYPE Type, OBJ::LAYER Layer)
 	, m_PosTarget(VEC3_ZERO_INIT)
 	, m_afpExecuteState{}
 	, m_vMichos()
-	, m_machine(new CStateMachine())
+	, m_stateMachine (new StateMachine<CPlayer>())
 {}
 
 //============================================================================
@@ -103,21 +103,13 @@ CPlayer::CPlayer(OBJ::TYPE Type, OBJ::LAYER Layer)
 CPlayer::~CPlayer()
 {
 	//ステイト情報がある時
-	if (m_machine != nullptr)
+	if (m_stateMachine != nullptr)
 	{
-		delete m_machine;
-		m_machine = nullptr;
+		delete m_stateMachine;
+		m_stateMachine = nullptr;
 	}
 }
 
-//============================================================================
-//状態の変更
-//============================================================================
-void CPlayer::ChangeState(std::shared_ptr<CPlayerStateBase> a_spState)
-{
-	a_spState->SetOwner(this);         //自身を同期
-	m_machine->ChangeState(a_spState); //状態の変更
-}
 
 //============================================================================
 //ジャンプ処理
@@ -221,9 +213,10 @@ bool CPlayer::Initialize()
 		return false;
 	}
 
-	// 初期状態の状態をセット
-	auto spStandState = std::make_shared<CPlayer_DefaultState>(); //通常状態の情報
-	ChangeState(spStandState);                                    //状態の変更
+	m_stateMachine->Start(this);
+
+	// 初期状態のステートをセット
+	m_stateMachine->ChangeState<CPlayer_DefaultState>();
 
 	// 状態ごとの実行内容を定義していく：通常
 	m_afpExecuteState[static_cast<unsigned char>(State::DEFAULT)] =
@@ -354,10 +347,10 @@ void CPlayer::Update()
 
 	if (!playerlist.empty() && self == playerlist.front())
 	{
+		m_stateMachine->Update(); //ステートの更新処理
+
 		// 数値編集
 		ValueEdit();
-
-		m_machine->Update(); //ステートの更新処理
 
 		// かんたんステートの実行
 		//m_afpExecuteState[static_cast<unsigned char>(m_State)]();
@@ -582,7 +575,7 @@ void CPlayer::ValueEdit()
 //============================================================================
 const char* CPlayer::ToString()
 {
-	const char* StateName = m_machine->GetState()->GetStateName();
+	const char* StateName = m_stateMachine->GetState()->GetStateName();
 	return StateName;
 }
 

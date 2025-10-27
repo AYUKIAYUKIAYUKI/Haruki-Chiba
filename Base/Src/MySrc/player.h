@@ -12,8 +12,8 @@
 //****************************************************
 #include "object.X.h"
 
-class CPlayerStateBase;
-class CStateMachine;
+template<typename T>
+class StateMachine;
 
 //****************************************************
 // プレイヤークラスの定義
@@ -123,12 +123,6 @@ public:
 	//**//==========================================================================================================
 
 	/**
-	 * @brief 状態を変える処理
-	 * @param [in] a_spState : プレイヤーの状態ポインター
-	 */
-	void ChangeState(std::shared_ptr<CPlayerStateBase> a_spState);
-
-	/**
 	 * @brief 移動処理
 	 * @param [in] fSpeed : 移動値
 	 */
@@ -155,6 +149,10 @@ public:
 	bool Hit();				 // 攻撃当たった処理
 
 	float GetRadius();		//半径を返す
+
+	inline void Null() {};
+
+	StateMachine<CPlayer>* Getmachine() { return m_stateMachine; }
 private:
 
 	//****************************************************
@@ -189,5 +187,5 @@ private:
 	Michos m_vMichos;
 
 	// ステートマシン
-	CStateMachine* m_machine;
+	StateMachine<CPlayer>* m_stateMachine;
 };

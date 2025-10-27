@@ -147,7 +147,7 @@ void CImpact::CheckCollision()
 
 			auto NextState = std::make_shared<CPlayer_DamageState>();
 			pOtherPlayer->Hit();
-			pOtherPlayer->ChangeState(NextState);
+			pOtherPlayer->Getmachine()->ChangeState<CPlayer_DamageState>(); //ダメージ状態へ移行
 		}
 	}
 }
