@@ -51,7 +51,6 @@ class CPlayer : public CObjectX
 	static float COEF_TRIGGER_JUMP;
 
 	// 移動速度
-	static float COEF_MOVE_SPEED;
 	static float COEF_MOVE_SPEED_AIR;
 
 	// 制動力
@@ -65,11 +64,7 @@ public:
 	//****************************************************
 	// 静的メンバ変数の宣言 (公開)
 	//****************************************************
-
-	inline float GetMOVE_SPEED()
-	{
-		return COEF_MOVE_SPEED;
-	}
+	static float COEF_MOVE_SPEED; //移動値
 
 	// デフォルトのファクトリ
 	static std::function<bool(CPlayer*)> s_fpDefaultFactory;
@@ -127,6 +122,12 @@ public:
 	 * @param [in] fSpeed : 移動値
 	 */
 	void Move(float fSpeed);
+
+	/**
+	 * @brief 移動処理
+	 * @param [in] fSpeed : 移動値
+	 */
+	bool Move();
 
 	/**
 	 * @brief 飛ぶ処理

@@ -328,11 +328,6 @@ public:
 	}
 
 	/**
-	 * @brief 移動キーが押されたかどうかの判定処理
-	 */
-	bool MoveKeyflag();
-
-	/**
 	 * @brief ジャンプ処理を呼ぶ処理
 	 */
 	bool CallJump(CPlayer* pPlayer);

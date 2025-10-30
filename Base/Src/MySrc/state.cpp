@@ -27,20 +27,6 @@ namespace PLAYER_INFO
 //==================================================================================================================================================
 
 //========================================
-//移動キー判定処理
-//========================================
-bool CPlayerStateBase::MoveKeyflag()
-{
-	//汚いがいったん代用
-	if (CInputManager::RefInstance().GetKeyboard()->GetPress(DIK_W) || CInputManager::RefInstance().GetKeyboard()->GetPress(DIK_A) ||
-		CInputManager::RefInstance().GetKeyboard()->GetPress(DIK_S) || CInputManager::RefInstance().GetKeyboard()->GetPress(DIK_D))
-	{
-		return true;
-	}
-	return false;
-}
-
-//========================================
 //プレイヤージャンプ処理を呼ぶ処理
 //========================================
 bool CPlayerStateBase::CallJump(CPlayer* pPlayer)
@@ -80,20 +66,20 @@ void CPlayer_DefaultState::OnUpdate(CPlayer* pPlayer)
 	if (pPlayer->GetVelocity().x > PLAYER_INFO::f_Check_Velocity || pPlayer->GetVelocity().x < -PLAYER_INFO::f_Check_Velocity
 		|| pPlayer->GetVelocity().z > PLAYER_INFO::f_Check_Velocity || pPlayer->GetVelocity().z < -PLAYER_INFO::f_Check_Velocity)
 	{
-		pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
+		pPlayer->Move(pPlayer->COEF_MOVE_SPEED); //移動処理 
 	}
 	else
 	{
 		//フラグがoff
 		if (m_bOneFlag == false)
 		{
-			pPlayer->SetVelocity({ 0.0f,0.0f,0.0f }); //加速度の初期化
+			pPlayer->SetVelocity({ useful::VEC3_ZERO_INIT }); //加速度の初期化
 			m_bOneFlag = true; //フラグon=初期化されるまでは通さない
 		}
 	}
 
 	//移動キーが押された時
-	if (MoveKeyflag() == true)
+	if (pPlayer->Move() == true)
 	{
 		GetMacine()->ChangeState<CPlayer_MoveState>(); //移動状態へ移行
 	}
@@ -152,10 +138,10 @@ void CPlayer_MoveState::OnStart(CPlayer* pPlayer)
 //========================================
 void CPlayer_MoveState::OnUpdate(CPlayer* pPlayer)
 {
-	pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
+	pPlayer->Move(pPlayer->COEF_MOVE_SPEED); //移動処理 
 
 	//移動キーが押されていない時
-	if (MoveKeyflag() == false)
+	if (pPlayer->Move()== false)
 	{
 		GetMacine()->ChangeState<CPlayer_DefaultState>(); //通常状態へ移行
 		return;
@@ -246,7 +232,7 @@ void CPlayer_JumpState::OnStart(CPlayer* pPlayer)
 //========================================
 void CPlayer_JumpState::OnUpdate(CPlayer* pPlayer)
 {
-	pPlayer->Move(pPlayer->GetMOVE_SPEED()); //移動処理 
+	pPlayer->Move(pPlayer->COEF_MOVE_SPEED); //移動処理 
 
 	//地面についた時(処理を完結)
 	if (pPlayer->InJump() == true)
@@ -307,7 +293,7 @@ const char* CPlayer_JumpState::GetStateName()
 //========================================
 void CPlayer_DamageState::OnStart(CPlayer* pPlayer)
 {
-	pPlayer->SetVelocity({ 0.0f,0.0f,0.0f }); //加速度の初期化(動かないようにする)
+	pPlayer->SetVelocity({useful::VEC3_ZERO_INIT }); //加速度の初期化(動かないようにする)
 }
 
 //========================================
