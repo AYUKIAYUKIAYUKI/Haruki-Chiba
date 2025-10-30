@@ -449,7 +449,7 @@ void CPlayer::Move(float fSpeed)
 //============================================================================
 // ˆÚ“®
 //============================================================================
-bool CPlayer::Move()
+bool CPlayer::JudgeInput()
 {
 	// “ü—Í•ûŒü‚ðŽæ“¾
 	std::optional<float> opDir = CInputManager::s_fpGetInputDir();

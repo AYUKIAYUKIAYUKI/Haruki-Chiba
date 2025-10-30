@@ -135,8 +135,8 @@ public:
 	*/
 	~StateMachine()
 	{
+		ClearState();               //削除
 		m_fnChangeState = []() {};  //念のため初期化
-		m_spNowState.reset();       //念のため削除
 		m_lStates.clear();          //念のため削除
 	}
 
@@ -195,6 +195,7 @@ public:
 	*/
 	void ClearState()
 	{
+
 		m_fnChangeState = [&]()
 		{
 			std::shared_ptr<CStateBase<OwnerType>> spNowState = GetNowState();
@@ -240,10 +241,19 @@ public:
 		return spBackState;
 	}
 
+	///**
+	// * @brief 現在のステートを返すよ
+	// */
+	//inline CStateBase<OwnerType>* GetState() { return m_spNowState.get(); };
+
 	/**
 	 * @brief 現在のステートを返すよ
 	 */
-	inline CStateBase<OwnerType>* GetState() { return m_spNowState.get(); };
+	inline std::shared_ptr<CStateBase<OwnerType>>& GetState()
+	{
+		//listで管理しつつ加算していくため、常に追加された物を参照していく(一応popで削除済)
+		return m_lStates.back();
+	};
 
 private:
 
@@ -268,13 +278,13 @@ private:
 
 				if (a_isPop)
 				{
-					m_lStates.pop_back();
+					
 				}
+				m_lStates.pop_back(); //現在のステートを削除
 			}
 
 			// 新しいステートを作成
 			std::shared_ptr<CStateBase<OwnerType>> spNewState = std::make_shared<StateType>(a_args...);
-			m_spNowState = std::make_shared<StateType>(a_args...); //引数で渡された情報を代入
 			if (spNewState == nullptr)
 			{
 				return;
@@ -283,11 +293,13 @@ private:
 			// 作成したステートをリストに追加
 			m_lStates.emplace_back(spNewState);
 
+			auto A = m_lStates;
 			// 新しいステートにこのマシーンをセット
 			spNewState->SetMachine(this);
 
 			// ステートの開始
 			spNewState->CallStart(m_pOwner);
+
 		};
 	}
 
@@ -299,9 +311,6 @@ private:
 
 	// 今のステート
 	std::list<std::shared_ptr<CStateBase<OwnerType>>> m_lStates;   //リストで保管
-
-	//今のステート
-	std::shared_ptr<CStateBase<OwnerType>> m_spNowState = nullptr; //今の状態を確認用ポインター
 
 	// ステートの変更命令を保存しておく関数オブジェクト
 	std::function<void()> m_fnChangeState;

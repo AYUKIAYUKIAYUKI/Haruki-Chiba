@@ -124,10 +124,9 @@ public:
 	void Move(float fSpeed);
 
 	/**
-	 * @brief 移動処理
-	 * @param [in] fSpeed : 移動値
+	 * @brief 入力されたかどうか判定する処理
 	 */
-	bool Move();
+	bool JudgeInput();
 
 	/**
 	 * @brief 飛ぶ処理
@@ -151,9 +150,16 @@ public:
 
 	float GetRadius();		//半径を返す
 
+	/**
+	 * @brief 何もない処理
+	 */
 	inline void Null() {};
 
+	/**
+	 * @brief ステイトマシーンの情報を返す処理
+	 */
 	StateMachine<CPlayer>* Getmachine() { return m_stateMachine; }
+
 private:
 
 	//****************************************************

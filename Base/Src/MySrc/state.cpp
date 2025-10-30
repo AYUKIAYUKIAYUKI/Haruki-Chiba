@@ -31,11 +31,11 @@ namespace PLAYER_INFO
 //========================================
 bool CPlayerStateBase::CallJump(CPlayer* pPlayer)
 {
-	//SPACEキーが押された時
-	if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE))
+	//SPACEキーが押された時かAボタンが押された時
+	if (CInputManager::RefInstance().GetKeyboard()->GetTrigger(DIK_SPACE)|| CInputManager::RefInstance().GetPad()->GetTrigger(CInputPad::JOYKEY::A))
 	{
 		pPlayer->Jump(); //ジャンプ処理
-		GetMacine()->ChangeState<CPlayer_JumpState>();    //ジャンプ状態へ移行
+		GetMacine()->ChangeState<CPlayer_JumpState>(); //ジャンプ状態へ移行
 
 		return true;
 	}
@@ -55,6 +55,7 @@ void CPlayer_DefaultState::OnStart(CPlayer* pPlayer)
 {
 	pPlayer->Null();
 	m_bOneFlag = false; //フラグの初期化
+	//GetMacine()->PopState();
 }
 
 //========================================
@@ -79,7 +80,7 @@ void CPlayer_DefaultState::OnUpdate(CPlayer* pPlayer)
 	}
 
 	//移動キーが押された時
-	if (pPlayer->Move() == true)
+	if (pPlayer->JudgeInput() == true)
 	{
 		GetMacine()->ChangeState<CPlayer_MoveState>(); //移動状態へ移行
 	}
@@ -141,7 +142,7 @@ void CPlayer_MoveState::OnUpdate(CPlayer* pPlayer)
 	pPlayer->Move(pPlayer->COEF_MOVE_SPEED); //移動処理 
 
 	//移動キーが押されていない時
-	if (pPlayer->Move()== false)
+	if (pPlayer->JudgeInput()== false)
 	{
 		GetMacine()->ChangeState<CPlayer_DefaultState>(); //通常状態へ移行
 		return;
