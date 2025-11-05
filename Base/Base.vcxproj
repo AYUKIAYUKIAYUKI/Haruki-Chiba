@@ -174,6 +174,7 @@ if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
     <ClCompile Include="Src\MySrc\input_keyboard.cpp" />
     <ClCompile Include="Src\MySrc\input_mouse.cpp" />
     <ClCompile Include="Src\MySrc\input_pad.cpp" />
+    <ClCompile Include="Src\MySrc\IronBall.cpp" />
     <ClCompile Include="Src\MySrc\light.cpp" />
     <ClCompile Include="Src\MySrc\main.cpp" />
     <ClCompile Include="Src\MySrc\input.manager.cpp" />
@@ -242,6 +243,7 @@ if exist "$(OutDir)$(TargetName).exp" del "$(OutDir)$(TargetName).exp"</Command>
     <ClInclude Include="Src\MySrc\input_keyboard.h" />
     <ClInclude Include="Src\MySrc\input_mouse.h" />
     <ClInclude Include="Src\MySrc\input_pad.h" />
+    <ClInclude Include="Src\MySrc\IronBall.h" />
     <ClInclude Include="Src\MySrc\light.h" />
     <ClInclude Include="Src\MySrc\main.h" />
     <ClInclude Include="Src\MySrc\input.manager.h" />

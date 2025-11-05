@@ -22,6 +22,7 @@ namespace OBJ
 		NONE = 0, // –³‚µ
 		PLAYER,   // ƒvƒŒƒCƒ„[
 		IMPUCT,	  // ÕŒ‚”g
+		IRONBALL, // “S‹…
 		MAX
 	};
 
